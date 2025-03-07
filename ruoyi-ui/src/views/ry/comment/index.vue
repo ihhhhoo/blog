@@ -154,7 +154,7 @@
                 <span class="date">{{mes.createTime}}</span>
                 <span v-show="mes.type=='0'" class="rp">给你评论</span>
                 <span v-show="mes.type=='1'" class="rp">回复了</span>
-                <span v-show="mes.type=='1'" class="pcreateBy">{{mes.pcreateBy}}</span>
+                <span v-show="mes.type=='1'" class="pcreateBy">{{mes.parentCreateBy}}</span>
                 <span v-show="mes.type=='1'" class="rp">的评论</span>
                 <span class="rp">|</span>
                 <span class="rp">查看文章：</span>
@@ -273,6 +273,7 @@ export default {
         this.commentList = response.rows;
         this.total = response.total;
         this.loading = false;
+        console.log("response = ",response);
       });
     },
 

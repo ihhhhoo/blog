@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ry.user.mapper.RySocialLinksMapper">
+
+    <resultMap type="RySocialLinks" id="RySocialLinksResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="githubUrl"    column="github_url"    />
+        <result property="gitUrl"    column="git_url"    />
+        <result property="qqUrl"    column="qq_url"    />
+        <result property="bilibiliUrl"    column="bilibili_url"    />
+        <result property="csdnUrl"    column="csdn_url"    />
+    </resultMap>
+
+    <sql id="selectRySocialLinksVo">
+        select id, user_id, github_url, git_url, qq_url, bilibili_url, csdn_url from ry_social_links
+    </sql>
+
+    <select id="selectRySocialLinksList" parameterType="RySocialLinks" resultMap="RySocialLinksResult">
+        <include refid="selectRySocialLinksVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="githubUrl != null  and githubUrl != ''"> and github_url = #{githubUrl}</if>
+            <if test="gitUrl != null  and gitUrl != ''"> and git_url = #{gitUrl}</if>
+            <if test="qqUrl != null  and qqUrl != ''"> and qq_url = #{qqUrl}</if>
+            <if test="bilibiliUrl != null  and bilibiliUrl != ''"> and bilibili_url = #{bilibiliUrl}</if>
+            <if test="csdnUrl != null  and csdnUrl != ''"> and csdn_url = #{csdnUrl}</if>
+        </where>
+    </select>
+
+    <select id="selectRySocialLinksById" parameterType="Long" resultMap="RySocialLinksResult">
+        <include refid="selectRySocialLinksVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectRySocialLinksByUserId" parameterType="Long" resultMap="RySocialLinksResult">
+        SELECT * FROM ry_social_links where user_id = #{userId}
+    </select>
+
+    <insert id="insertRySocialLinks" parameterType="RySocialLinks" useGeneratedKeys="true" keyProperty="id">
+        insert into ry_social_links
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="githubUrl != null">github_url,</if>
+            <if test="gitUrl != null">git_url,</if>
+            <if test="qqUrl != null">qq_url,</if>
+            <if test="bilibiliUrl != null">bilibili_url,</if>
+            <if test="csdnUrl != null">csdn_url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="githubUrl != null">#{githubUrl},</if>
+            <if test="gitUrl != null">#{gitUrl},</if>
+            <if test="qqUrl != null">#{qqUrl},</if>
+            <if test="bilibiliUrl != null">#{bilibiliUrl},</if>
+            <if test="csdnUrl != null">#{csdnUrl},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRySocialLinks" parameterType="RySocialLinks">
+        update ry_social_links
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="githubUrl != null">github_url = #{githubUrl},</if>
+            <if test="gitUrl != null">git_url = #{gitUrl},</if>
+            <if test="qqUrl != null">qq_url = #{qqUrl},</if>
+            <if test="bilibiliUrl != null">bilibili_url = #{bilibiliUrl},</if>
+            <if test="csdnUrl != null">csdn_url = #{csdnUrl},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteRySocialLinksById" parameterType="Long">
+        delete from ry_social_links where id = #{id}
+    </delete>
+
+    <delete id="deleteRySocialLinksByIds" parameterType="String">
+        delete from ry_social_links where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

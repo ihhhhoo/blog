@@ -181,12 +181,12 @@
 import { listBlog, getBlog, delBlog, addBlog, updateBlog } from "@/api/ry/blog";
 import {Loading} from 'element-ui'
 import errorCode from '../../../utils/errorCode'
-// import filesUpload from './components/filesUpload'
+import CherryMarkdown from '@/components/CherryMarkdown'
 
 export default {
-  // components: {
-  //   filesUpload
-  // },
+  components: {
+    CherryMarkdown,
+  },
   name: "Blog",
   data() {
     return {
@@ -253,10 +253,12 @@ export default {
     this.getList();
   },
   methods: {
+
     /** 查询博客信息列表 */
     getList() {
       this.loading = true;
       listBlog(this.queryParams).then(response => {
+        console.log("response= " ,response);
         this.blogList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -394,3 +396,4 @@ export default {
     height: 180px;
   }
 </style>
+

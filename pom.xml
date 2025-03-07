@@ -41,6 +41,17 @@
     <dependencyManagement>
         <dependencies>
 
+            <!--&lt;!&ndash;导入swagger&ndash;&gt;-->
+            <!--<dependency>-->
+            <!--    <groupId>io.springfox</groupId>-->
+            <!--    <artifactId>springfox-swagger-ui</artifactId>-->
+            <!--    <version>2.3.0</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+            <!--    <groupId>io.springfox</groupId>-->
+            <!--    <artifactId>springfox-swagger2</artifactId>-->
+            <!--    <version>2.3.0</version>-->
+            <!--</dependency>-->
             <!-- 覆盖SpringFramework的依赖配置-->
             <dependency>
                 <groupId>org.springframework</groupId>
