@@ -70,7 +70,8 @@ public class RyUserInfoServiceImpl implements IRyUserInfoService
     public int insertRyUserInfo(RyUserInfo ryUserInfo)
     {
         //插入的时候把标签改成数组存进去
-        ryUserInfo.setTags(Arrays.toString(ryUserInfo.getTags().split(",")));
+        // ryUserInfo.setTags(Arrays.toString(ryUserInfo.getTags().split(",")));
+        ryUserInfo.setTags("["+ryUserInfo.getTags()+"]");
         //新增用户信息不需要加入爱好
         return ryUserInfoMapper.insertRyUserInfo(ryUserInfo);
     }
@@ -86,10 +87,11 @@ public class RyUserInfoServiceImpl implements IRyUserInfoService
     {
         //标签也要改成数组存进去
         if(ryUserInfo.getTags() != null){
-            ryUserInfo.setTags(Arrays.toString(ryUserInfo.getTags().split(",")));
+            // ryUserInfo.setTags(Arrays.toString(ryUserInfo.getTags().split(",")));
+            ryUserInfo.setTags("["+ryUserInfo.getTags()+"]");
         }
-        //更新时间
-        ryUserInfo.setUpdateTime(new Date());
+        // //更新时间
+        // ryUserInfo.setUpdateTime(new Date());
         //修改属性
         Long userId = ryUserInfo.getId();
         System.out.println("userId= " +userId);
@@ -101,7 +103,6 @@ public class RyUserInfoServiceImpl implements IRyUserInfoService
             socialLinks.setUserId(userId);
             if(rySocialLinks != null){
                 //原本就有社交属性的话就修改社交属性
-                rySocialLinks.setUpdateTime(new Date());
                 rySocialLinksMapper.updateRySocialLinks(socialLinks);
             }else{
                 //新增

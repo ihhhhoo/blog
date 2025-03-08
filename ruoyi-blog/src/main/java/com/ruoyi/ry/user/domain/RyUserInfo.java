@@ -5,13 +5,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.io.Serializable;
+
 /**
  * 用户信息对象 ry_user_info
  *
  * @author ruoyi
  * @date 2025-03-05
  */
-public class RyUserInfo extends BaseEntity
+public class RyUserInfo implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
@@ -58,6 +60,11 @@ public class RyUserInfo extends BaseEntity
     @Excel(name = "开始标题")
     private String startTitle;
 
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    private String createBy;
 
 
     /** $column.columnComment */
@@ -202,5 +209,9 @@ public class RyUserInfo extends BaseEntity
             .append("startTitle", getStartTitle())
                 .append("context",getContext())
             .toString();
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
     }
 }

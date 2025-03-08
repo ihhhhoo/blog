@@ -17,6 +17,9 @@
     </properties>
 
     <dependencies>
+
+
+
         <!-- 通用工具-->
         <dependency>
             <groupId>com.ruoyi</groupId>

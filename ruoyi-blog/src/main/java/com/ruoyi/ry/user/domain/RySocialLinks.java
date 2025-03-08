@@ -5,13 +5,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.io.Serializable;
+
 /**
  * 社交链接对象 ry_social_links
  *
  * @author ruoyi
  * @date 2025-03-05
  */
-public class RySocialLinks extends BaseEntity
+public class RySocialLinks implements Serializable
 {
     private static final long serialVersionUID = 1L;
 

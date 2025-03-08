@@ -66,9 +66,12 @@ public class RyMessageServiceImpl implements IRyMessageService
                 //找出此用户所有没有被删除的留言，以及给他留言的留言
 
                 ryMessage.setDelFlag("0");
-                List<RyMessage> ryMessageList = ryMessageMapper.selectRyMessageList(ryMessage);
+                List<RyMessage> ryMessageList = ryMessageMapper.selectRyMessageListByCreateBy(ryMessage);
                 //查询子评论 (没有查询父留言 只从当前留言查询子留言)
-                ryMessages = ryMessageList.stream().map(message -> {
+                ryMessages = ryMessageList.stream().filter(message -> {
+                    //只查询根留言
+                    return message.getParentId() == null;
+                }).map(message -> {
                     //映射操作 设置子分类
                     message.setChildMessages(getChildMessage(message, allMessage));
                     return message;
@@ -160,31 +163,30 @@ public class RyMessageServiceImpl implements IRyMessageService
         List<RyMessage> collect = allMessage.stream().filter(ryMessage -> {
 
             //过滤Long //类型是1代表是回复的
-            return ryMessage.getParentId().equals(root.getId()) && ryMessage.getType().equals("1");
+            return ryMessage.getParentId() != null && ryMessage.getParentId().equals(root.getId()) && ryMessage.getType().equals("1");
             //找出子分类
         }).map(ryMessage -> {
             //设置子留言
             //循环递归
             ryMessage.setChildMessages(getChildMessage(ryMessage, allMessage));
             return ryMessage;
-        }).sorted((message1,message2) ->{//根据修改时间排序
-            return message1.getUpdateTime().compareTo(message2.getUpdateTime());
         }).collect(Collectors.toList());
         return collect;
     }
 
     //找出根留言加入
-    private RyMessage getRootMessage(RyMessage ryMessage,List<RyMessage> allMessage){
-        //判断是否为根留言
-        if(ryMessage.getParentId() == null && "".equals(ryMessage.getParentId())){
-            //为根留言
-            return ryMessage;
-        }
-        //不是根评论
-        //找出根评论
-        RyMessage rootMessage = allMessage.stream().filter(message -> {
-            return message.getId().equals(ryMessage.getParentId());
-        }).findFirst().orElse(null);
-        return getRootMessage(rootMessage,allMessage);
-    }
+    // private RyMessage getRootMessage(RyMessage ryMessage,List<RyMessage> allMessage){
+    //     //判断是否为根留言
+    //     if(ryMessage.getParentId() == null){
+    //         //没有父节点 为根留言
+    //         return ryMessage;
+    //     }
+    //     //不是根评论
+    //     //找出根评论
+    //     RyMessage rootMessage = allMessage.stream().filter(message -> {
+    //         return message.getId().equals(ryMessage.getParentId()) && message.getType().equals("1"); //类型1代表回复 0代表留言
+    //     }).findFirst().orElse(null);
+    //     assert rootMessage != null;
+    //     return getRootMessage(rootMessage,allMessage);
+    // }
 }

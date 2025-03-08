@@ -65,7 +65,7 @@ public class RyCommentServiceImpl implements IRyCommentService
                 //找出此用户所有没有被删除的留言，以及给他留言的留言
 
                 ryComment.setDelFlag("0");
-                List<RyComment> RyCommentList = ryCommentMapper.selectRyCommentList(ryComment);
+                List<RyComment> RyCommentList = ryCommentMapper.selectRyCommentListByCreateBy(ryComment);
                 //查询子评论 (没有查询父留言 只从当前留言查询子留言)
                 ryComments = RyCommentList.stream().map(comment -> {
                     //映射操作 设置子分类
@@ -156,12 +156,11 @@ public class RyCommentServiceImpl implements IRyCommentService
 
     private List<RyComment> getChildComment(RyComment ryComment, List<RyComment> allComment) {
         List<RyComment> collect = allComment.stream().filter(comment -> {
-            return comment.getParentId().equals(ryComment.getId()) && comment.getType().equals("1");
+                return comment.getParentId() != null && comment.getParentId().equals(ryComment.getId()) && comment.getType().equals("1");
         }).map(comment -> {
+
             comment.setChildComments(getChildComment(comment, allComment));
             return comment;
-        }).sorted((comment1, comment2) -> {
-            return comment1.getUpdateTime().compareTo(comment2.getUpdateTime());
         }).collect(Collectors.toList());
         return collect;
     }

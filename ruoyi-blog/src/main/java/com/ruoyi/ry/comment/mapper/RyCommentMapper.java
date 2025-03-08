@@ -5,15 +5,15 @@ import com.ruoyi.ry.comment.domain.RyComment;
 
 /**
  * 评论Mapper接口
- * 
+ *
  * @author ruoyi
  * @date 2025-02-26
  */
-public interface RyCommentMapper 
+public interface RyCommentMapper
 {
     /**
      * 查询评论
-     * 
+     *
      * @param id 评论主键
      * @return 评论
      */
@@ -21,15 +21,19 @@ public interface RyCommentMapper
 
     /**
      * 查询评论列表
-     * 
+     *
      * @param ryComment 评论
      * @return 评论集合
      */
     public List<RyComment> selectRyCommentList(RyComment ryComment);
 
+    /** 通过创建人查询评论列表 */
+    public List<RyComment> selectRyCommentListByCreateBy(RyComment ryComment);
+
+
     /**
      * 新增评论
-     * 
+     *
      * @param ryComment 评论
      * @return 结果
      */
@@ -37,7 +41,7 @@ public interface RyCommentMapper
 
     /**
      * 修改评论
-     * 
+     *
      * @param ryComment 评论
      * @return 结果
      */
@@ -45,7 +49,7 @@ public interface RyCommentMapper
 
     /**
      * 删除评论
-     * 
+     *
      * @param id 评论主键
      * @return 结果
      */
@@ -53,7 +57,7 @@ public interface RyCommentMapper
 
     /**
      * 批量删除评论
-     * 
+     *
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */

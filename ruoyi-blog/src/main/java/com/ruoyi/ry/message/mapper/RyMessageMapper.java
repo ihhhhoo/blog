@@ -5,15 +5,15 @@ import com.ruoyi.ry.message.domain.RyMessage;
 
 /**
  * 留言Mapper接口
- * 
+ *
  * @author ruoyi
  * @date 2025-02-26
  */
-public interface RyMessageMapper 
+public interface RyMessageMapper
 {
     /**
      * 查询留言
-     * 
+     *
      * @param id 留言主键
      * @return 留言
      */
@@ -21,15 +21,19 @@ public interface RyMessageMapper
 
     /**
      * 查询留言列表
-     * 
+     *
      * @param ryMessage 留言
      * @return 留言集合
      */
     public List<RyMessage> selectRyMessageList(RyMessage ryMessage);
 
+    /** 查询留言的根据创建的人 */
+    public List<RyMessage> selectRyMessageListByCreateBy(RyMessage ryMessage);
+
+
     /**
      * 新增留言
-     * 
+     *
      * @param ryMessage 留言
      * @return 结果
      */
@@ -37,7 +41,7 @@ public interface RyMessageMapper
 
     /**
      * 修改留言
-     * 
+     *
      * @param ryMessage 留言
      * @return 结果
      */
@@ -45,7 +49,7 @@ public interface RyMessageMapper
 
     /**
      * 删除留言
-     * 
+     *
      * @param id 留言主键
      * @return 结果
      */
@@ -53,7 +57,7 @@ public interface RyMessageMapper
 
     /**
      * 批量删除留言
-     * 
+     *
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */

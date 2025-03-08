@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.ry.message.mapper.RyMessageMapper">
-    
+
     <resultMap type="RyMessage" id="RyMessageResult">
         <result property="id"    column="id"    />
         <result property="parentId"    column="parent_id"    />
@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectRyMessageList" parameterType="RyMessage" resultMap="RyMessageResult">
         <include refid="selectRyMessageVo"/>
-        <where>  
+        <where>
             <if test="parentId != null "> and parent_id = #{parentId}</if>
             <if test="mainId != null "> and main_id = #{mainId}</if>
             <if test="likeNum != null "> and like_num = #{likeNum}</if>
@@ -36,7 +36,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null "> and user_id = #{userId}</if>
         </where>
     </select>
-    
+
+
+    <select id="selectRyMessageListByCreateBy" parameterType="RyMessage" resultMap="RyMessageResult">
+        <include refid="selectRyMessageVo"/>
+        <where>
+            <if test="createBy != null "> and create_by = #{createBy}</if>
+            <if test="delFlag != null "> and del_Flag = #{delFlag}</if>
+        </where>
+    </select>
+
     <select id="selectRyMessageById" parameterType="Long" resultMap="RyMessageResult">
         <include refid="selectRyMessageVo"/>
         where id = #{id}
@@ -98,7 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteRyMessageByIds" parameterType="String">
-        delete from ry_message where id in 
+        delete from ry_message where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

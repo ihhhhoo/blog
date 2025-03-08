@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.ry.comment.mapper.RyCommentMapper">
-    
+
     <resultMap type="RyComment" id="RyCommentResult">
         <result property="id"    column="id"    />
         <result property="parentId"    column="parent_id"    />
@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectRyCommentList" parameterType="RyComment" resultMap="RyCommentResult">
         <include refid="selectRyCommentVo"/>
-        <where>  
+        <where>
             <if test="parentId != null "> and parent_id = #{parentId}</if>
             <if test="mainId != null "> and main_id = #{mainId}</if>
             <if test="likeNum != null "> and like_num = #{likeNum}</if>
@@ -36,7 +36,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null "> and user_id = #{userId}</if>
         </where>
     </select>
-    
+
+
+    <select id="selectRyCommentListByCreateBy" parameterType="RyComment" resultMap="RyCommentResult">
+        <include refid="selectRyCommentVo"/>
+        <where>
+            <if test="createBy != null "> and create_by = #{createBy}</if>
+            <if test="delFlag != null "> and del_Flag = #{delFlag}</if>
+        </where>
+    </select>
+
     <select id="selectRyCommentById" parameterType="Long" resultMap="RyCommentResult">
         <include refid="selectRyCommentVo"/>
         where id = #{id}
@@ -98,7 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteRyCommentByIds" parameterType="String">
-        delete from ry_comment where id in 
+        delete from ry_comment where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
