@@ -1,5 +1,6 @@
 package com.ruoyi.ry.user.service.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +69,8 @@ public class RyUserInfoServiceImpl implements IRyUserInfoService
     @Override
     public int insertRyUserInfo(RyUserInfo ryUserInfo)
     {
+        //插入的时候把标签改成数组存进去
+        ryUserInfo.setTags(Arrays.toString(ryUserInfo.getTags().split(",")));
         //新增用户信息不需要加入爱好
         return ryUserInfoMapper.insertRyUserInfo(ryUserInfo);
     }
@@ -81,6 +84,10 @@ public class RyUserInfoServiceImpl implements IRyUserInfoService
     @Override
     public int updateRyUserInfo(RyUserInfo ryUserInfo)
     {
+        //标签也要改成数组存进去
+        if(ryUserInfo.getTags() != null){
+            ryUserInfo.setTags(Arrays.toString(ryUserInfo.getTags().split(",")));
+        }
         //更新时间
         ryUserInfo.setUpdateTime(new Date());
         //修改属性
