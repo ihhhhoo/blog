@@ -12,6 +12,9 @@ import com.ruoyi.ry.tag.domain.RyTag;
 import com.ruoyi.ry.tag.service.IRyTagService;
 import com.ruoyi.ry.type.domain.RyType;
 import com.ruoyi.ry.type.service.IRyTypeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +42,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/ry/blog")
+@Api(value = "博客文章信息接口", tags = "博客文章信息相关的接口")
 public class RyBlogController extends BaseController
 {
     @Autowired
@@ -56,6 +60,7 @@ public class RyBlogController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ry:blog:list')")
     @GetMapping("/list")
+    @ApiOperation(value = "查询所有文章信息列表" ,notes = "查询文章信息列表")
     public TableDataInfo list(RyBlog ryBlog)
     {
         System.out.println("list被调用..");
@@ -73,7 +78,7 @@ public class RyBlogController extends BaseController
      * 导出博客信息列表
      */
     // @PreAuthorize("@ss.hasPermi('ry:blog:export')")
-    @Log(title = "博客信息", businessType = BusinessType.EXPORT)
+    @Log(title = "文章信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, RyBlog ryBlog)
     {
@@ -86,6 +91,7 @@ public class RyBlogController extends BaseController
      * 获取博客信息详细信息
      */
     // @PreAuthorize("@ss.hasPermi('ry:blog:query')")
+    @ApiOperation(value = "根据id获取博客文章信息", notes = "获取博客文章信息详细信息")
     @GetMapping(value = {"/","/{id}"})
     public AjaxResult getInfo(@PathVariable(value = "id" , required = false) Long id)
     {
@@ -106,6 +112,8 @@ public class RyBlogController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ry:blog:add')")
     @Log(title = "博客信息", businessType = BusinessType.INSERT)
+    @ApiOperation(value = "新增博客文章", notes = "新增博客文章")
+    @ApiImplicitParam(name = "ryBlog", value = "博客文章信息", required = true, dataType = "RyBlog", paramType = "body")
     @PostMapping
     public AjaxResult add(@RequestBody RyBlog ryBlog)
     {
@@ -123,6 +131,8 @@ public class RyBlogController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ry:blog:edit')")
     @Log(title = "博客信息", businessType = BusinessType.UPDATE)
+    @ApiOperation(value = "修改博客文章信息", notes = "修改博客文章信息")
+    @ApiImplicitParam(name = "ryBlog", value = "博客文章信息", required = true, dataType = "RyBlog", paramType = "body")
     @PutMapping
     public AjaxResult edit(@RequestBody RyBlog ryBlog)
     {
@@ -136,6 +146,7 @@ public class RyBlogController extends BaseController
      */
     // @PreAuthorize("@ss.hasPermi('ry:blog:remove')")
     @Log(title = "博客信息", businessType = BusinessType.DELETE)
+    @ApiOperation(value = "根据id删除博客文章信息", notes = "删除博客文章信息")
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {

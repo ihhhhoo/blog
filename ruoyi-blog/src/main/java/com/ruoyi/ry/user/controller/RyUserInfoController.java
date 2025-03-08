@@ -4,6 +4,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.utils.SecurityUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +35,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/ry/user")
+@Api(value = "测试接口", tags = "用户管理相关的接口")
 public class RyUserInfoController extends BaseController
 {
     @Autowired
@@ -40,6 +45,7 @@ public class RyUserInfoController extends BaseController
      * 查询用户信息列表
      */
     @PreAuthorize("@ss.hasPermi('ry:user:list')")
+    @ApiOperation(value = "查询所有用户信息列表", notes = "查询用户信息列表")
     @GetMapping("/list")
     public TableDataInfo list(RyUserInfo ryUserInfo)
     {
@@ -68,6 +74,7 @@ public class RyUserInfoController extends BaseController
      * 获取用户信息详细信息
      */
     @PreAuthorize("@ss.hasPermi('ry:user:query')")
+    @ApiOperation(value = "根据id获取用户信息", notes = "获取用户信息详细信息")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -80,6 +87,8 @@ public class RyUserInfoController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ry:user:add')")
     @Log(title = "用户信息", businessType = BusinessType.INSERT)
+    @ApiImplicitParam(name = "ryUserInfo", value = "用户信息", required = true, dataType = "RyUserInfo", paramType = "body")
+    @ApiOperation(value = "新增用户信息", notes = "新增用户信息")
     @PostMapping
     public AjaxResult add(@RequestBody RyUserInfo ryUserInfo)
     {
@@ -91,6 +100,8 @@ public class RyUserInfoController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ry:user:edit')")
     @Log(title = "用户信息", businessType = BusinessType.UPDATE)
+    @ApiImplicitParam(name = "ryUserInfo", value = "用户信息", required = true, dataType = "RyUserInfo", paramType = "body")
+    @ApiOperation(value = "修改用户信息", notes = "修改用户信息")
     @PutMapping
     public AjaxResult edit(@RequestBody RyUserInfo ryUserInfo)
     {
@@ -102,6 +113,7 @@ public class RyUserInfoController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ry:user:remove')")
     @Log(title = "用户信息", businessType = BusinessType.DELETE)
+    @ApiOperation(value = "根据id删除用户信息", notes = "删除用户信息")
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {

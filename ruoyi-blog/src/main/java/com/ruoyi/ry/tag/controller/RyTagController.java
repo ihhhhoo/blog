@@ -4,6 +4,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.utils.SecurityUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +34,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/ry/tag")
+@Api(value = "标签信息接口", tags = "标签信息相关的接口")
 public class RyTagController extends BaseController
 {
     @Autowired
@@ -42,6 +46,7 @@ public class RyTagController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ry:tag:list')")
     @GetMapping("/list")
+    @ApiOperation(value = "查询所有标签信息列表", notes = "查询标签信息列表")
     public TableDataInfo list(RyTag ryTag)
     {
         startPage();
@@ -67,6 +72,7 @@ public class RyTagController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ry:tag:query')")
     @GetMapping(value = "/{tagId}")
+    @ApiOperation(value = "根据id获取标签信息", notes = "获取标签信息详细信息")
     public AjaxResult getInfo(@PathVariable("tagId") Long tagId)
     {
         return success(ryTagService.selectRyTagByTagId(tagId));
@@ -78,6 +84,8 @@ public class RyTagController extends BaseController
     @PreAuthorize("@ss.hasPermi('ry:tag:add')")
     @Log(title = "标签信息", businessType = BusinessType.INSERT)
     @PostMapping
+    @ApiOperation(value = "新增标签信息", notes = "新增标签信息")
+    @ApiImplicitParam(name = "ryTag", value = "标签信息", required = true, dataType = "RyTag", paramType = "body")
     public AjaxResult add(@RequestBody RyTag ryTag)
     {
         return toAjax(ryTagService.insertRyTag(ryTag));
@@ -89,6 +97,8 @@ public class RyTagController extends BaseController
     @PreAuthorize("@ss.hasPermi('ry:tag:edit')")
     @Log(title = "标签信息", businessType = BusinessType.UPDATE)
     @PutMapping
+    @ApiOperation(value = "修改标签信息", notes = "修改标签信息")
+    @ApiImplicitParam(name = "ryTag", value = "标签信息", required = true, dataType = "RyTag", paramType = "body")
     public AjaxResult edit(@RequestBody RyTag ryTag)
     {
         return toAjax(ryTagService.updateRyTag(ryTag));
@@ -100,6 +110,7 @@ public class RyTagController extends BaseController
     @PreAuthorize("@ss.hasPermi('ry:tag:remove')")
     @Log(title = "标签信息", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{tagIds}")
+    @ApiOperation(value = "根据id删除标签信息", notes = "删除标签信息")
     public AjaxResult remove(@PathVariable Long[] tagIds)
     {
         return toAjax(ryTagService.deleteRyTagByTagIds(tagIds));

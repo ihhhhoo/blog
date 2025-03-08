@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.framework.web.service.SysPermissionService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +36,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/ry/message")
+@Api(value = "留言信息接口", tags = "留言信息相关的接口")
 public class RyMessageController extends BaseController
 {
     @Autowired
@@ -46,6 +50,7 @@ public class RyMessageController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ry:message:list')")
     @GetMapping("/list")
+    @ApiOperation(value = "查询所有留言信息列表", notes = "查询留言信息列表")
     public TableDataInfo list(RyMessage ryMessage)
     {
         startPage();
@@ -79,6 +84,7 @@ public class RyMessageController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ry:message:query')")
     @GetMapping(value = "/{id}")
+    @ApiOperation(value = "根据id获取留言信息", notes = "获取留言信息详细信息")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return success(ryMessageService.selectRyMessageById(id));
@@ -90,6 +96,8 @@ public class RyMessageController extends BaseController
     @PreAuthorize("@ss.hasPermi('ry:message:add')")
     @Log(title = "留言", businessType = BusinessType.INSERT)
     @PostMapping
+    @ApiOperation(value = "新增留言信息", notes = "新增留言信息")
+    @ApiImplicitParam(name = "ryMessage", value = "留言信息", required = true, dataType = "RyMessage", paramType = "body")
     public AjaxResult add(@RequestBody RyMessage ryMessage)
     {
         return toAjax(ryMessageService.insertRyMessage(ryMessage));
@@ -101,6 +109,8 @@ public class RyMessageController extends BaseController
     @PreAuthorize("@ss.hasPermi('ry:message:edit')")
     @Log(title = "留言", businessType = BusinessType.UPDATE)
     @PutMapping
+    @ApiOperation(value = "修改留言信息", notes = "修改留言信息")
+    @ApiImplicitParam(name = "ryMessage", value = "留言信息", required = true, dataType = "RyMessage", paramType = "body")
     public AjaxResult edit(@RequestBody RyMessage ryMessage)
     {
         return toAjax(ryMessageService.updateRyMessage(ryMessage));
@@ -112,6 +122,7 @@ public class RyMessageController extends BaseController
     @PreAuthorize("@ss.hasPermi('ry:message:remove')")
     @Log(title = "留言", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
+    @ApiOperation(value = "根据id删除留言信息", notes = "删除留言信息")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(ryMessageService.deleteRyMessageByIds(ids));

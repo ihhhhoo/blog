@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.framework.web.service.SysPermissionService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +36,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/ry/comment")
+@Api(value = "评论信息接口", tags = "评论信息相关的接口")
 public class RyCommentController extends BaseController
 {
     @Autowired
@@ -45,6 +49,7 @@ public class RyCommentController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ry:comment:list')")
     @GetMapping("/list")
+    @ApiOperation(value = "查询所有评论信息列表" ,notes = "查询评论信息列表")
     public TableDataInfo list(RyComment ryComment)
     {
         startPage();
@@ -75,6 +80,7 @@ public class RyCommentController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ry:comment:query')")
     @GetMapping(value = "/{id}")
+    @ApiOperation(value = "根据id获取评论信息", notes = "获取评论信息详细信息")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return success(ryCommentService.selectRyCommentById(id));
@@ -86,6 +92,8 @@ public class RyCommentController extends BaseController
     @PreAuthorize("@ss.hasPermi('ry:comment:add')")
     @Log(title = "评论", businessType = BusinessType.INSERT)
     @PostMapping
+    @ApiOperation(value = "新增评论", notes = "新增评论")
+    @ApiImplicitParam(name = "ryComment", value = "评论信息", required = true, dataType = "RyComment", paramType = "body")
     public AjaxResult add(@RequestBody RyComment ryComment)
     {
         return toAjax(ryCommentService.insertRyComment(ryComment));
@@ -97,6 +105,8 @@ public class RyCommentController extends BaseController
     @PreAuthorize("@ss.hasPermi('ry:comment:edit')")
     @Log(title = "评论", businessType = BusinessType.UPDATE)
     @PutMapping
+    @ApiOperation(value = "修改评论", notes = "修改评论")
+    @ApiImplicitParam(name = "ryComment", value = "评论信息", required = true, dataType = "RyComment", paramType = "body")
     public AjaxResult edit(@RequestBody RyComment ryComment)
     {
         return toAjax(ryCommentService.updateRyComment(ryComment));
@@ -108,6 +118,7 @@ public class RyCommentController extends BaseController
     @PreAuthorize("@ss.hasPermi('ry:comment:remove')")
     @Log(title = "评论", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
+    @ApiOperation(value = "根据id删除评论信息", notes = "删除评论信息")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(ryCommentService.deleteRyCommentByIds(ids));
