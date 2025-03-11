@@ -102,7 +102,6 @@ public class RyTypeController extends BaseController
     public AjaxResult edit(@RequestBody RyType ryType)
     {
         ryType.setUpdateTime(new Date());
-        ryType.setUpdateBy(getUsername());
         return toAjax(ryTypeService.updateRyType(ryType));
     }
 

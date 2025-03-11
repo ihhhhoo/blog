@@ -108,7 +108,7 @@ public class RyBlogController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody RyBlog ryBlog)
     {
-        ryBlog.setCreateBy(getUsername());
+        // ryBlog.setCreateBy(getUsername());
         Long blogId = ryBlogService.insertRyBlog(ryBlog);
 
         if(!StringUtils.isNotNull(blogId)){
