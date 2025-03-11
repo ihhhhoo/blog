@@ -42,43 +42,24 @@ public class RyCommentController extends BaseController
     @Autowired
     private IRyCommentService ryCommentService;
 
-    @Autowired
-    private SysPermissionService permissionService;
     /**
      * 查询评论列表
      */
-    @PreAuthorize("@ss.hasPermi('ry:comment:list')")
     @GetMapping("/list")
     @ApiOperation(value = "查询所有评论信息列表" ,notes = "查询评论信息列表")
     public TableDataInfo list(RyComment ryComment)
     {
         startPage();
-        // Set<String> roles = permissionService.getRolePermission(getLoginUser().getUser());
-        if(!SecurityUtils.isAdmin(getUserId())){
-            ryComment.setCreateBy(getUsername());
-        }
+
         ryComment.setDelFlag("0");
         List<RyComment> list = ryCommentService.selectRyCommentList(ryComment);
         return getDataTable(list);
     }
 
-    /**
-     * 导出评论列表
-     */
-    @PreAuthorize("@ss.hasPermi('ry:comment:export')")
-    @Log(title = "评论", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, RyComment ryComment)
-    {
-        List<RyComment> list = ryCommentService.selectRyCommentList(ryComment);
-        ExcelUtil<RyComment> util = new ExcelUtil<RyComment>(RyComment.class);
-        util.exportExcel(response, list, "评论数据");
-    }
 
     /**
      * 获取评论详细信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:comment:query')")
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "根据id获取评论信息", notes = "获取评论信息详细信息")
     public AjaxResult getInfo(@PathVariable("id") Long id)
@@ -89,7 +70,6 @@ public class RyCommentController extends BaseController
     /**
      * 新增评论
      */
-    @PreAuthorize("@ss.hasPermi('ry:comment:add')")
     @Log(title = "评论", businessType = BusinessType.INSERT)
     @PostMapping
     @ApiOperation(value = "新增评论", notes = "新增评论")
@@ -102,7 +82,6 @@ public class RyCommentController extends BaseController
     /**
      * 修改评论
      */
-    @PreAuthorize("@ss.hasPermi('ry:comment:edit')")
     @Log(title = "评论", businessType = BusinessType.UPDATE)
     @PutMapping
     @ApiOperation(value = "修改评论", notes = "修改评论")
@@ -115,7 +94,6 @@ public class RyCommentController extends BaseController
     /**
      * 删除评论
      */
-    @PreAuthorize("@ss.hasPermi('ry:comment:remove')")
     @Log(title = "评论", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     @ApiOperation(value = "根据id删除评论信息", notes = "删除评论信息")

@@ -50,24 +50,9 @@ public class RyUserInfoController extends BaseController
     public TableDataInfo list(RyUserInfo ryUserInfo)
     {
         startPage();
-        if(!SecurityUtils.isAdmin(getUserId())){
-            ryUserInfo.setCreateBy(getUsername());
-        }
+
         List<RyUserInfo> list = ryUserInfoService.selectRyUserInfoList(ryUserInfo);
         return getDataTable(list);
-    }
-
-    /**
-     * 导出用户信息列表
-     */
-    @PreAuthorize("@ss.hasPermi('ry:user:export')")
-    @Log(title = "用户信息", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, RyUserInfo ryUserInfo)
-    {
-        List<RyUserInfo> list = ryUserInfoService.selectRyUserInfoList(ryUserInfo);
-        ExcelUtil<RyUserInfo> util = new ExcelUtil<RyUserInfo>(RyUserInfo.class);
-        util.exportExcel(response, list, "用户信息数据");
     }
 
     /**

@@ -44,36 +44,22 @@ public class RyTypeController extends BaseController
     /**
      * 查询分类信息列表
      */
-    @PreAuthorize("@ss.hasPermi('ry:type:list')")
+
     @GetMapping("/list")
     @ApiOperation(value = "查询分类信息列表", notes = "查询分类信息列表")
     public TableDataInfo list(RyType ryType)
     {
         startPage();
-        if(!SecurityUtils.isAdmin(getUserId())){
-            ryType.setCreateBy(getUsername());
-        }
+
         List<RyType> list = ryTypeService.selectRyTypeList(ryType);
         return getDataTable(list);
     }
 
-    /**
-     * 导出分类信息列表
-     */
-    @PreAuthorize("@ss.hasPermi('ry:type:export')")
-    @Log(title = "分类信息", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, RyType ryType)
-    {
-        List<RyType> list = ryTypeService.selectRyTypeList(ryType);
-        ExcelUtil<RyType> util = new ExcelUtil<RyType>(RyType.class);
-        util.exportExcel(response, list, "分类信息数据");
-    }
 
     /**
      * 获取分类信息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:type:query')")
+
     @GetMapping(value = "/{typeId}")
     @ApiOperation(value = "根据typeId获取分类信息", notes = "获取分类信息")
     public AjaxResult getInfo(@PathVariable("typeId") Long typeId)
@@ -84,7 +70,7 @@ public class RyTypeController extends BaseController
     /**
      * 新增分类信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:type:add')")
+
     @Log(title = "分类信息", businessType = BusinessType.INSERT)
     @ApiOperation(value = "新增分类信息", notes = "新增分类信息")
     @ApiImplicitParam(name = "ryType", value = "分类信息", required = true, dataType = "RyType", paramType = "body")
@@ -97,7 +83,7 @@ public class RyTypeController extends BaseController
     /**
      * 修改分类信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:type:edit')")
+
     @Log(title = "分类信息", businessType = BusinessType.UPDATE)
     @ApiOperation(value = "修改分类信息", notes = "修改分类信息")
     @ApiImplicitParam(name = "ryType", value = "分类信息", required = true, dataType = "RyType", paramType = "body")
@@ -105,14 +91,14 @@ public class RyTypeController extends BaseController
     public AjaxResult edit(@RequestBody RyType ryType)
     {
         ryType.setUpdateTime(new Date());
-        ryType.setUpdateBy(getUsername());
+
         return toAjax(ryTypeService.updateRyType(ryType));
     }
 
     /**
      * 删除分类信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:type:remove')")
+
     @Log(title = "分类信息", businessType = BusinessType.DELETE)
     @ApiOperation(value = "根据typeIds删除分类信息", notes = "删除分类信息")
 	@DeleteMapping("/{typeIds}")

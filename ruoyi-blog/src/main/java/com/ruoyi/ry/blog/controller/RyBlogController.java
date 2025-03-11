@@ -47,8 +47,7 @@ public class RyBlogController extends BaseController
 {
     @Autowired
     private IRyBlogService ryBlogService;
-    @Autowired
-    private SysPermissionService permissionService;
+
     @Resource
     private IRyTagService ryTagService;
     @Resource
@@ -65,27 +64,12 @@ public class RyBlogController extends BaseController
     {
         System.out.println("list被调用..");
         startPage();
-        //状态发布
-        Set<String> roles = permissionService.getRolePermission(getLoginUser().getUser());
-        if(!SecurityUtils.isAdmin(getUserId()) && !roles.contains("admin")){
-            ryBlog.setCreateBy(getUsername());
-        }
+
         List<RyBlog> list = ryBlogService.selectRyBlogList(ryBlog);
         return getDataTable(list);
     }
 
-    /**
-     * 导出博客信息列表
-     */
-    // @PreAuthorize("@ss.hasPermi('ry:blog:export')")
-    @Log(title = "文章信息", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, RyBlog ryBlog)
-    {
-        List<RyBlog> list = ryBlogService.selectRyBlogList(ryBlog);
-        ExcelUtil<RyBlog> util = new ExcelUtil<RyBlog>(RyBlog.class);
-        util.exportExcel(response, list, "博客信息数据");
-    }
+
 
     /**
      * 获取博客信息详细信息
@@ -96,10 +80,6 @@ public class RyBlogController extends BaseController
     public AjaxResult getInfo(@PathVariable(value = "id" , required = false) Long id)
     {
         AjaxResult ajaxResult = AjaxResult.success();
-        RyType ryType = new RyType();
-        RyTag ryTag = new RyTag();
-        ajaxResult.put("types",ryTypeService.selectRyTypeList(ryType));
-        ajaxResult.put("tags",ryTagService.selectRyTagList(ryTag));
         if(StringUtils.isNotNull(id)){
             ajaxResult.put(AjaxResult.DATA_TAG,ryBlogService.selectRyBlogById(id));
         }

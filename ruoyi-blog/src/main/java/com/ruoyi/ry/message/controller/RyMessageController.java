@@ -42,47 +42,29 @@ public class RyMessageController extends BaseController
     @Autowired
     private IRyMessageService ryMessageService;
 
-    @Autowired
-    private SysPermissionService permissionService;
+
 
     /**
      * 查询留言列表
      */
-    @PreAuthorize("@ss.hasPermi('ry:message:list')")
+
     @GetMapping("/list")
     @ApiOperation(value = "查询所有留言信息列表", notes = "查询留言信息列表")
     public TableDataInfo list(RyMessage ryMessage)
     {
         startPage();
-        //list
-        // Set<String> roles = permissionService.getRolePermission(getLoginUser().getUser());
-        //查询登录的用户是不是admin不是的话就只查询自己创造的留言
-        if(!SecurityUtils.isAdmin(getUserId())){
-            ryMessage.setCreateBy(getUsername());
-        }
+
         ryMessage.setDelFlag("0");
         //查询没有删除的留言 0存在 1删除
         List<RyMessage> list = ryMessageService.selectRyMessageList(ryMessage);
         return getDataTable(list);
     }
 
-    /**
-     * 导出留言列表
-     */
-    @PreAuthorize("@ss.hasPermi('ry:message:export')")
-    @Log(title = "留言", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, RyMessage ryMessage)
-    {
-        List<RyMessage> list = ryMessageService.selectRyMessageList(ryMessage);
-        ExcelUtil<RyMessage> util = new ExcelUtil<RyMessage>(RyMessage.class);
-        util.exportExcel(response, list, "留言数据");
-    }
+
 
     /**
      * 获取留言详细信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:message:query')")
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "根据id获取留言信息", notes = "获取留言信息详细信息")
     public AjaxResult getInfo(@PathVariable("id") Long id)
@@ -93,7 +75,6 @@ public class RyMessageController extends BaseController
     /**
      * 新增留言
      */
-    @PreAuthorize("@ss.hasPermi('ry:message:add')")
     @Log(title = "留言", businessType = BusinessType.INSERT)
     @PostMapping
     @ApiOperation(value = "新增留言信息", notes = "新增留言信息")
@@ -106,7 +87,6 @@ public class RyMessageController extends BaseController
     /**
      * 修改留言
      */
-    @PreAuthorize("@ss.hasPermi('ry:message:edit')")
     @Log(title = "留言", businessType = BusinessType.UPDATE)
     @PutMapping
     @ApiOperation(value = "修改留言信息", notes = "修改留言信息")
@@ -119,7 +99,6 @@ public class RyMessageController extends BaseController
     /**
      * 删除留言
      */
-    @PreAuthorize("@ss.hasPermi('ry:message:remove')")
     @Log(title = "留言", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     @ApiOperation(value = "根据id删除留言信息", notes = "删除留言信息")

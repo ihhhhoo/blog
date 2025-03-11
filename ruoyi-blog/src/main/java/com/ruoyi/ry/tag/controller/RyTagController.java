@@ -44,7 +44,6 @@ public class RyTagController extends BaseController
     /**
      * 查询标签信息列表
      */
-    @PreAuthorize("@ss.hasPermi('ry:tag:list')")
     @GetMapping("/list")
     @ApiOperation(value = "查询所有标签信息列表", notes = "查询标签信息列表")
     public TableDataInfo list(RyTag ryTag)
@@ -57,7 +56,6 @@ public class RyTagController extends BaseController
     /**
      * 导出标签信息列表
      */
-    @PreAuthorize("@ss.hasPermi('ry:tag:export')")
     @Log(title = "标签信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, RyTag ryTag)
@@ -70,7 +68,6 @@ public class RyTagController extends BaseController
     /**
      * 获取标签信息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:tag:query')")
     @GetMapping(value = "/{tagId}")
     @ApiOperation(value = "根据id获取标签信息", notes = "获取标签信息详细信息")
     public AjaxResult getInfo(@PathVariable("tagId") Long tagId)
@@ -81,7 +78,6 @@ public class RyTagController extends BaseController
     /**
      * 新增标签信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:tag:add')")
     @Log(title = "标签信息", businessType = BusinessType.INSERT)
     @PostMapping
     @ApiOperation(value = "新增标签信息", notes = "新增标签信息")
@@ -94,7 +90,7 @@ public class RyTagController extends BaseController
     /**
      * 修改标签信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:tag:edit')")
+
     @Log(title = "标签信息", businessType = BusinessType.UPDATE)
     @PutMapping
     @ApiOperation(value = "修改标签信息", notes = "修改标签信息")
@@ -107,7 +103,7 @@ public class RyTagController extends BaseController
     /**
      * 删除标签信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:tag:remove')")
+
     @Log(title = "标签信息", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{tagIds}")
     @ApiOperation(value = "根据id删除标签信息", notes = "删除标签信息")
