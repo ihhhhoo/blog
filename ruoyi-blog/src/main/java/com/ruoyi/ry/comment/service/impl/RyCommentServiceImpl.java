@@ -51,19 +51,65 @@ public class RyCommentServiceImpl implements IRyCommentService
      * @param ryComment 评论
      * @return 评论
      */
+    // @Override
+    // public List<RyComment> selectRyCommentList(RyComment ryComment)
+    // {
+    //     List<RyComment> ryComments = new ArrayList<>();
+    //     //判断用户权限
+    //     String createBy = ryComment.getCreateBy();
+    //     List<RyComment> allComment = ryCommentMapper.selectRyCommentList(null);
+    //     if(createBy != null && !"".equals(createBy)){
+    //         SysUser user = sysUserMapper.selectUserByUserName(createBy);
+    //         if(user != null){
+    //             //存在此用户
+    //             //找出此用户所有没有被删除的留言，以及给他留言的留言
+    //
+    //             ryComment.setDelFlag("0");
+    //             List<RyComment> RyCommentList = ryCommentMapper.selectRyCommentListByCreateBy(ryComment);
+    //             //查询子评论 (没有查询父留言 只从当前留言查询子留言)
+    //             ryComments = RyCommentList.stream().map(comment -> {
+    //                 //映射操作 设置子分类
+    //                 comment.setChildComments(getChildComment(comment, allComment));
+    //                 return comment;
+    //             }).collect(Collectors.toList());
+    //         }
+    //     }else {
+    //         //查询所有评论
+    //         ryComments = ryCommentMapper.selectRyCommentList(ryComment);
+    //     }
+    //     //添加头像
+    //     ryComments.forEach(comment -> {
+    //         Long userId = comment.getUserId();
+    //         if(userId != null){
+    //             SysUser user = sysUserMapper.selectUserById(userId);
+    //             comment.setAvatar(user.getAvatar());
+    //         }
+    //         //添加父留言
+    //         Long parentId = comment.getParentId();
+    //         if(parentId != null){
+    //             RyComment parentComment = ryCommentMapper.selectRyCommentById(parentId);
+    //             comment.setParentCreateBy(parentComment.getCreateBy());
+    //         }
+    //
+    //         //添加博客信息 -》导航过去
+    //         Long blogId = comment.getBlogId();
+    //         if(blogId != null){
+    //             RyBlog ryBlog = ryBlogMapper.selectRyBlogById(blogId);
+    //             comment.setBlogTitle(ryBlog.getTitle());
+    //         }
+    //
+    //
+    //     });
+    //
+    //     return ryComments;
+    // }
+
     @Override
     public List<RyComment> selectRyCommentList(RyComment ryComment)
     {
         List<RyComment> ryComments = new ArrayList<>();
-        //判断用户权限
-        String createBy = ryComment.getCreateBy();
-        List<RyComment> allComment = ryCommentMapper.selectRyCommentList(null);
-        if(createBy != null && !"".equals(createBy)){
-            SysUser user = sysUserMapper.selectUserByUserName(createBy);
-            if(user != null){
-                //存在此用户
-                //找出此用户所有没有被删除的留言，以及给他留言的留言
 
+        List<RyComment> allComment = ryCommentMapper.selectRyCommentList(null);
                 ryComment.setDelFlag("0");
                 List<RyComment> RyCommentList = ryCommentMapper.selectRyCommentListByCreateBy(ryComment);
                 //查询子评论 (没有查询父留言 只从当前留言查询子留言)
@@ -72,11 +118,7 @@ public class RyCommentServiceImpl implements IRyCommentService
                     comment.setChildComments(getChildComment(comment, allComment));
                     return comment;
                 }).collect(Collectors.toList());
-            }
-        }else {
-            //查询所有评论
-            ryComments = ryCommentMapper.selectRyCommentList(ryComment);
-        }
+
         //添加头像
         ryComments.forEach(comment -> {
             Long userId = comment.getUserId();
@@ -103,7 +145,6 @@ public class RyCommentServiceImpl implements IRyCommentService
 
         return ryComments;
     }
-
     /**
      * 新增评论
      *

@@ -16,7 +16,7 @@ ruoyi:
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
-  port: 8080
+  port: 8082
   servlet:
     # 应用的访问路径
     context-path: /
@@ -48,7 +48,7 @@ user:
 # Spring配置
 spring:
   config:
-    import: optional:file:classpath:/application-dev.yml[.properties]
+    import: optional:file:.env[.properties]
   # 资源信息
   messages:
     # 国际化资源文件路径
@@ -90,13 +90,12 @@ spring:
 #        # #连接池最大阻塞等待时间（使用负值表示没有限制）
 #        max-wait: -1ms
 #oss配置 xxx你自己的对应信息
-
 aliyun:
   oss:
-    endpoint: ${endpoint}  # 阿里云 OSS的endpoint
-    accessKeyId: ${accessKeyId}      # 阿里云 AccessKey ID
-    accessKeySecret: ${accessKeySecret} # 阿里云 AccessKey Secret
-    bucketName: ${bucketName} # OSS存储桶名称
+    endpoint: ${ENDPOINT}  # 阿里云 OSS的endpoint
+    accessKeyId: ${ACCESSKEYID}      # 阿里云 AccessKey ID
+    accessKeySecret: ${ACCESSKEYSECRET} # 阿里云 AccessKey Secret
+    bucketName: ${BUCKETNAME} # OSS存储桶名称
 
 
 # token配置
@@ -128,7 +127,7 @@ swagger:
   # 是否开启swagger
   enabled: true
   # 请求前缀
-  pathMapping: /dev-api
+  pathMapping: /
 
 # 防止XSS攻击
 xss:

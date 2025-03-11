@@ -42,6 +42,8 @@ public class RyCommentController extends BaseController
     @Autowired
     private IRyCommentService ryCommentService;
 
+    @Autowired
+    private SysPermissionService permissionService;
     /**
      * 查询评论列表
      */
@@ -50,12 +52,24 @@ public class RyCommentController extends BaseController
     public TableDataInfo list(RyComment ryComment)
     {
         startPage();
+        // Set<String> roles = permissionService.getRolePermission(getLoginUser().getUser());
 
         ryComment.setDelFlag("0");
         List<RyComment> list = ryCommentService.selectRyCommentList(ryComment);
         return getDataTable(list);
     }
 
+    /**
+     * 导出评论列表
+     */
+    @Log(title = "评论", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, RyComment ryComment)
+    {
+        List<RyComment> list = ryCommentService.selectRyCommentList(ryComment);
+        ExcelUtil<RyComment> util = new ExcelUtil<RyComment>(RyComment.class);
+        util.exportExcel(response, list, "评论数据");
+    }
 
     /**
      * 获取评论详细信息

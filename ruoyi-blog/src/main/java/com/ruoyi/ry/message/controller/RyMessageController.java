@@ -42,7 +42,8 @@ public class RyMessageController extends BaseController
     @Autowired
     private IRyMessageService ryMessageService;
 
-
+    @Autowired
+    private SysPermissionService permissionService;
 
     /**
      * 查询留言列表
@@ -60,11 +61,23 @@ public class RyMessageController extends BaseController
         return getDataTable(list);
     }
 
+    /**
+     * 导出留言列表
+     */
 
+    @Log(title = "留言", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, RyMessage ryMessage)
+    {
+        List<RyMessage> list = ryMessageService.selectRyMessageList(ryMessage);
+        ExcelUtil<RyMessage> util = new ExcelUtil<RyMessage>(RyMessage.class);
+        util.exportExcel(response, list, "留言数据");
+    }
 
     /**
      * 获取留言详细信息
      */
+
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "根据id获取留言信息", notes = "获取留言信息详细信息")
     public AjaxResult getInfo(@PathVariable("id") Long id)

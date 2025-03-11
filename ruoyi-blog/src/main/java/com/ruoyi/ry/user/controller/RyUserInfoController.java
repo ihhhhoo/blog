@@ -44,21 +44,33 @@ public class RyUserInfoController extends BaseController
     /**
      * 查询用户信息列表
      */
-    @PreAuthorize("@ss.hasPermi('ry:user:list')")
     @ApiOperation(value = "查询所有用户信息列表", notes = "查询用户信息列表")
     @GetMapping("/list")
     public TableDataInfo list(RyUserInfo ryUserInfo)
     {
         startPage();
-
+        // if(!SecurityUtils.isAdmin(getUserId())){
+        //     ryUserInfo.setCreateBy(getUsername());
+        // }
         List<RyUserInfo> list = ryUserInfoService.selectRyUserInfoList(ryUserInfo);
         return getDataTable(list);
     }
 
     /**
+     * 导出用户信息列表
+     */
+    @Log(title = "用户信息", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, RyUserInfo ryUserInfo)
+    {
+        List<RyUserInfo> list = ryUserInfoService.selectRyUserInfoList(ryUserInfo);
+        ExcelUtil<RyUserInfo> util = new ExcelUtil<RyUserInfo>(RyUserInfo.class);
+        util.exportExcel(response, list, "用户信息数据");
+    }
+
+    /**
      * 获取用户信息详细信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:user:query')")
     @ApiOperation(value = "根据id获取用户信息", notes = "获取用户信息详细信息")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
@@ -70,7 +82,7 @@ public class RyUserInfoController extends BaseController
     /**
      * 新增用户信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:user:add')")
+
     @Log(title = "用户信息", businessType = BusinessType.INSERT)
     @ApiImplicitParam(name = "ryUserInfo", value = "用户信息", required = true, dataType = "RyUserInfo", paramType = "body")
     @ApiOperation(value = "新增用户信息", notes = "新增用户信息")
@@ -83,7 +95,6 @@ public class RyUserInfoController extends BaseController
     /**
      * 修改用户信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:user:edit')")
     @Log(title = "用户信息", businessType = BusinessType.UPDATE)
     @ApiImplicitParam(name = "ryUserInfo", value = "用户信息", required = true, dataType = "RyUserInfo", paramType = "body")
     @ApiOperation(value = "修改用户信息", notes = "修改用户信息")
@@ -96,7 +107,6 @@ public class RyUserInfoController extends BaseController
     /**
      * 删除用户信息
      */
-    @PreAuthorize("@ss.hasPermi('ry:user:remove')")
     @Log(title = "用户信息", businessType = BusinessType.DELETE)
     @ApiOperation(value = "根据id删除用户信息", notes = "删除用户信息")
 	@DeleteMapping("/{ids}")

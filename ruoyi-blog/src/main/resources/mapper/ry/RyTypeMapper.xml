@@ -27,6 +27,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="typePic != null  and typePic != ''"> and type_pic = #{typePic}</if>
             <if test="typePicType != null  and typePicType != ''"> and type_pic_type = #{typePicType}</if>
             <if test="typePicLink != null  and typePicLink != ''"> and type_pic_link = #{typePicLink}</if>
+            <if test="typeId != null  and typeId != ''"> and type_id = #{typeId}</if>
+            <if test="createBy != null">and create_by = #{createBy},</if>
+            <if test="createTime != null">and create_time = #{createTime},</if>
+            <if test="updateBy != null">and update_by = #{updateBy},</if>
+            <if test="updateTime != null">and update_time = #{updateTime},</if>
         </where>
     </select>
 

@@ -37,6 +37,7 @@ public class RyBlogFileController extends BaseController
     /**
      * 查询blog文件列表
      */
+    @PreAuthorize("@ss.hasPermi('ry:file:list')")
     @GetMapping("/list")
     public TableDataInfo list(RyBlogFile ryBlogFile)
     {
@@ -49,6 +50,7 @@ public class RyBlogFileController extends BaseController
     /**
      * 获取blog文件详细信息
      */
+    @PreAuthorize("@ss.hasPermi('ry:file:query')")
     @GetMapping(value = "/{fileId}")
     public AjaxResult getInfo(@PathVariable("fileId") Long fileId)
     {
@@ -58,6 +60,7 @@ public class RyBlogFileController extends BaseController
     /**
      * 新增blog文件
      */
+    @PreAuthorize("@ss.hasPermi('ry:file:add')")
     @Log(title = "blog文件", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody RyBlogFile ryBlogFile)
@@ -70,6 +73,7 @@ public class RyBlogFileController extends BaseController
     /**
      * 删除blog文件
      */
+    @PreAuthorize("@ss.hasPermi('ry:file:remove')")
     @Log(title = "blog文件", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{fileIds}")
     public AjaxResult remove(@PathVariable Long[] fileIds)

@@ -7,7 +7,8 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+.env
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
-/ruoyi-admin/src/main/resources/application-dev.yml
+#/ruoyi-admin/src/main/resources/application-dev.yml
 

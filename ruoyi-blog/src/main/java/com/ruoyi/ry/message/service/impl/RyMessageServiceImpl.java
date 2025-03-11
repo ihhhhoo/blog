@@ -51,20 +51,62 @@ public class RyMessageServiceImpl implements IRyMessageService
      * @param ryMessage 留言
      * @return 留言
      */
+    // @Override
+    // public List<RyMessage> selectRyMessageList(RyMessage ryMessage)
+    // {
+    //
+    //     List<RyMessage> ryMessages = new ArrayList<>();
+    //     //判断用户权限
+    //     String createBy = ryMessage.getCreateBy();
+    //     List<RyMessage> allMessage = ryMessageMapper.selectRyMessageList(null);
+    //     if(createBy != null && !"".equals(createBy)){
+    //         SysUser user = sysUserMapper.selectUserByUserName(createBy);
+    //         if(user != null){
+    //             //存在此用户
+    //             //找出此用户所有没有被删除的留言，以及给他留言的留言
+    //
+    //             ryMessage.setDelFlag("0");
+    //             List<RyMessage> ryMessageList = ryMessageMapper.selectRyMessageListByCreateBy(ryMessage);
+    //             //查询子评论 (没有查询父留言 只从当前留言查询子留言)
+    //             ryMessages = ryMessageList.stream().filter(message -> {
+    //                 //只查询根留言
+    //                 return message.getParentId() == null;
+    //             }).map(message -> {
+    //                 //映射操作 设置子分类
+    //                 message.setChildMessages(getChildMessage(message, allMessage));
+    //                 return message;
+    //             }).collect(Collectors.toList());
+    //         }
+    //     }else {
+    //         //查询所有评论
+    //         ryMessages = ryMessageMapper.selectRyMessageList(ryMessage);
+    //     }
+    //     //添加头像
+    //     ryMessages.forEach(message -> {
+    //         Long userId = message.getUserId();
+    //         if(userId != null){
+    //             SysUser user = sysUserMapper.selectUserById(userId);
+    //             message.setAvatar(user.getAvatar());
+    //         }
+    //         //添加父留言
+    //         Long parentId = message.getParentId();
+    //         if(parentId != null){
+    //             RyMessage parentMessage = ryMessageMapper.selectRyMessageById(parentId);
+    //             message.setParentCreateBy(parentMessage.getCreateBy());
+    //         }
+    //     });
+    //
+    //     return ryMessages;
+    // }
+
     @Override
     public List<RyMessage> selectRyMessageList(RyMessage ryMessage)
     {
 
         List<RyMessage> ryMessages = new ArrayList<>();
         //判断用户权限
-        String createBy = ryMessage.getCreateBy();
-        List<RyMessage> allMessage = ryMessageMapper.selectRyMessageList(null);
-        if(createBy != null && !"".equals(createBy)){
-            SysUser user = sysUserMapper.selectUserByUserName(createBy);
-            if(user != null){
-                //存在此用户
-                //找出此用户所有没有被删除的留言，以及给他留言的留言
 
+        List<RyMessage> allMessage = ryMessageMapper.selectRyMessageList(null);
                 ryMessage.setDelFlag("0");
                 List<RyMessage> ryMessageList = ryMessageMapper.selectRyMessageListByCreateBy(ryMessage);
                 //查询子评论 (没有查询父留言 只从当前留言查询子留言)
@@ -76,11 +118,7 @@ public class RyMessageServiceImpl implements IRyMessageService
                     message.setChildMessages(getChildMessage(message, allMessage));
                     return message;
                 }).collect(Collectors.toList());
-            }
-        }else {
-            //查询所有评论
-            ryMessages = ryMessageMapper.selectRyMessageList(ryMessage);
-        }
+
         //添加头像
         ryMessages.forEach(message -> {
             Long userId = message.getUserId();
@@ -98,6 +136,7 @@ public class RyMessageServiceImpl implements IRyMessageService
 
         return ryMessages;
     }
+
 
     /**
      * 新增留言
